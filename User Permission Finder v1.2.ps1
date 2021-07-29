@@ -32,7 +32,7 @@ While($Count -lt $Max){
         }
         $FileContent = Import-csv "$DocumentFile\$User\$User.cvs" -header File
         $FileContentLess = $FileContent -replace $Pattern, ''
-        $FileContentLess = $FileContentLess -replace "@{File=", '' -replace "}", ''
+        $FileContentLess = $FileContentLess -replace "@{File=", '' -replace "}", ''  -replace "(", ''  -replace ")", ''
         $FileLess = $File -replace $Pattern, ''
         if ($FileContentLess[0] -eq $null){
             "$file" | add-content -path "$DocumentFile\$User\$User.cvs"
@@ -47,7 +47,7 @@ While($Count -lt $Max){
     $Check = 0
     $SubCount++
     $SubPercentDone = [math]::Round(100*($SubCount/$SubMax),2)
-    Write-Progress -Id 1 -Activity "Documenting User" -Status "$SubPercentDone %" -PercentComplete $SubPercentDone -CurrentOperation "$User"
+    Write-Progress -Id 1 -Activity "Documenting User" -PercentComplete $SubPercentDone
     }
 $count++
 $PercentDone = [math]::Round(100*($Count/$Max),2)
