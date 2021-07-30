@@ -18,21 +18,21 @@ Remove-Item -Path "$End\User Permission Files v1.2"
 $DocumentFile = New-Item -ItemType directory -Path "$End\User Permission Files v1.2"
 While($Count -lt $Max){
     $File = $FileLocal[$Count]
-    $ID = (get-acl "$File").access | select IdentityReference | where-object {$_.IdentityReference -like "GRAY*" -and $_.IdentityReference -notlike "*SG"}
+    $ID = (get-acl "$File").access | select IdentityReference
     $SubCount = 0
     $SubMax = @($ID).Count
     While($SubCount -lt $SubMax){
         $User = $ID[$SubCount]
         $Pattern = '[\\]'
         $User = $User -replace $Pattern, ' '
-        $User = $User -replace "@{IdentityReference=GRAY ", '' -replace "}", ''
+        $User = $User -replace "@{IdentityReference= ", '' -replace "}", ''
         if (-Not (Test-path -Path "$DocumentFile\$User\$User.cvs")){
             New-Item -ItemType directory -Path "$DocumentFile\$User"
             New-Item -ItemType File -Path "$DocumentFile\$User\$User.cvs"
         }
         $FileContent = Import-csv "$DocumentFile\$User\$User.cvs" -header File
         $FileContentLess = $FileContent -replace $Pattern, ''
-        $FileContentLess = $FileContentLess -replace "@{File=", '' -replace "}", ''  -replace "(", ''  -replace ")", ''
+        $FileContentLess = $FileContentLess -replace "@{File=", '' -replace "}", ''
         $FileLess = $File -replace $Pattern, ''
         if ($FileContentLess[0] -eq $null){
             "$file" | add-content -path "$DocumentFile\$User\$User.cvs"
