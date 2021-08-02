@@ -25,7 +25,7 @@ While($Count -lt $Max){
         $User = $ID[$SubCount]
         $Pattern = '[\\]'
         $User = $User -replace $Pattern, ' '
-        $User = $User -replace "@{IdentityReference=GRAY ", '' -replace "}", ''
+        $User = $User -replace "@{IdentityReference=", '' -replace "}", ''
         if (-Not (Test-path -Path "$DocumentFile\$User\$User.cvs")){
             New-Item -ItemType directory -Path "$DocumentFile\$User"
             New-Item -ItemType File -Path "$DocumentFile\$User\$User.cvs"
@@ -53,3 +53,4 @@ $count++
 $PercentDone = [math]::Round(100*($Count/$Max),2)
 Write-Progress -ParentId 1 -Activity "Documenting File" -Status "$Count out of $Max Files documented | $PercentDone %" -PercentComplete $PercentDone -CurrentOperation "$File"
 }
+Write-Host -NoNewLine 'Press any key to continue...';
